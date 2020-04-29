@@ -5,8 +5,20 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+    <ClassTreeList/>
   </div>
 </template>
+
+<script>
+import ClassTreeList from './components/ClassTreeList.vue';
+
+export default {
+  name: 'App',
+  components: {
+    ClassTreeList,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
