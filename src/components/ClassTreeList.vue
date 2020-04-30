@@ -12,6 +12,7 @@
 import ClassTree from './ClassTree.vue';
 
 export default {
+  name: 'ClassTreeList',
   components: {
     ClassTree,
   },

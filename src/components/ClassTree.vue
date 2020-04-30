@@ -13,7 +13,7 @@
 import RecursiveClass from './RecursiveClass.vue';
 
 export default {
-  name: 'tree',
+  name: 'ClassTree',
   props: {
     tree: Object,
   },

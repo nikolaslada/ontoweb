@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'node',
+  name: 'RecursiveClass',
   props: {
     node: Object,
   },
