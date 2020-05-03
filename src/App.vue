@@ -6,16 +6,19 @@
     </div>
     <router-view/>
     <ClassTreeList/>
+    <ClassItem/>
   </div>
 </template>
 
 <script>
 import ClassTreeList from './components/ClassTreeList.vue';
+import ClassItem from './components/class/ClassItem.vue';
 
 export default {
   name: 'App',
   components: {
     ClassTreeList,
+    ClassItem,
   },
 };
 </script>
