@@ -1,12 +1,15 @@
 <template>
     <div>
         <template v-if="true">
-          <pre>
+          <div class="jumbotron">
+            <p class="code">
               <RecursiveCondition
                 :node="condition"
+                :move="0"
               >
               </RecursiveCondition>
-          </pre>
+            </p>
+          </div>
         </template>
 
         <template v-else>
@@ -22,6 +25,7 @@ export default {
   name: 'Condition',
   props: {
     condition: Object,
+    move: Number,
   },
   components: {
     RecursiveCondition,

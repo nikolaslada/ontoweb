@@ -1,55 +1,96 @@
 <template>
   <span>
     <template v-if="node.type === 'set'">
-      <span
-        v-for="(set, i) in node.set"
-        :key="i"
-        class="set"
-      >
-        <span v-if="i > 1"> and</span>
-        <RecursiveCondition
-          :node="set"
+        <template
+          v-if="move > 0 || node.not"
         >
-        </RecursiveCondition>
-      </span>
+          <template
+            v-if="node.not"
+          >
+            <span class="not"></span>
+            <span class="operator">not </span>
+          </template>
+          <span class="construct">(</span>
+          <br/>
+          <span
+            :data-move="move"
+          ></span>
+        </template>
+        <span
+          v-for="(set, i) in node.set"
+          :key="i"
+          class="set"
+        >
+          <span
+            v-if="i > 0"
+            :data-move="move"
+            class="operator"
+          >{{ node.operator }} </span>
+          <RecursiveCondition
+            :node="set"
+            :move="getMove(move)"
+          >
+          </RecursiveCondition>
+          <br/>
+        </span>
+        <template
+          v-if="move > 0"
+        >
+          <span
+            :data-move="move - 1"
+            class="construct"
+          >)</span>
+        </template>
     </template>
 
     <template v-else-if="node.type === 'class'">
-        <span>
-          <span v-if="node.isNegative">!</span>
+        <template>
+          <template
+            v-if="node.not"
+          >
+            <span class="not"></span>
+            <span class="operator">not </span>
+            <span class="construct">(</span>
+          </template>
+          <span class="circle"></span>
           <span class="className">{{ node.name }}</span>
-        </span>
+          <template
+            v-if="node.not"
+          >
+            <span class="construct">)</span>
+          </template>
+        </template>
     </template>
 
     <template v-else-if="node.type === 'property' && node.set">
       <span class="propertyUse">
-        <span>(</span>
-        <span class="propertyName">{{ node.name }}</span>
-        <span class="propertyRestriction">{{ node.restriction }}</span>
-        <span v-if="node.set.type === 'set'">
-          <span></span>
+        <span class="construct">(</span>
+        <span class="propertyName">{{ node.name }} </span>
+        <span class="propertyRestriction">{{ node.restriction }} </span>
+        <template v-if="node.set.type === 'set'">
           <RecursiveCondition
             :node="node.set"
+            :move="move"
           >
           </RecursiveCondition>
-          <span></span>
-        </span>
-        <span>
+        </template>
+        <template v-else>
           <RecursiveCondition
             :node="node.set"
+            :move="move"
           >
           </RecursiveCondition>
-        </span>
-        <span>)</span>
+        </template>
+        <span class="construct">)</span>
       </span>
     </template>
 
     <template v-else-if="node.type === 'property' && node.value">
-      <span>
-        <span class="propertyName">{{ node.name }}</span>
-        <span class="propertyRestriction">{{ node.restriction }}</span>
-        <span class="propertyValue">{{ node.value }}</span>
-      </span>
+      <span class="construct">(</span>
+      <span class="propertyName">{{ node.name }} </span>
+      <span class="propertyRestriction">{{ node.restriction }} </span>
+      <span class="propertyValue">{{ node.value }}</span>
+      <span class="construct">)</span>
     </template>
 
     <template v-else>
@@ -66,6 +107,19 @@ export default {
   name: 'RecursiveCondition',
   props: {
     node: Object,
+    move: Number,
+  },
+  methods: {
+    getMove(current) {
+      let move;
+      if (current < 5) {
+        move = current + 1;
+      } else {
+        move = current;
+      }
+
+      return move;
+    },
   },
 };
 </script>

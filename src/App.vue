@@ -44,4 +44,64 @@ export default {
     }
   }
 }
+
+.code {
+  text-align: left;
+  font-weight: bold;
+}
+
+.construct {
+  font-weight: bold;
+}
+
+.operator {
+  color: darkcyan;
+}
+
+.not:before {
+  font-size: 125%;
+  content: '¬';
+}
+
+.className {
+  color: black;
+}
+
+.circle:before {
+  color: gold;
+  font-size: 150%;
+  content: ' \25CF';
+}
+
+.propertyName {
+  color: darkolivegreen;
+}
+
+.propertyRestriction {
+  color: firebrick;
+}
+
+.propertyValue {
+  color: black;
+}
+
+[data-move='1'] {
+  padding-left: 2em;
+}
+
+[data-move='2'] {
+  padding-left: 4em;
+}
+
+[data-move='3'] {
+  padding-left: 6em;
+}
+
+[data-move='4'] {
+  padding-left: 8em;
+}
+
+[data-move='5'] {
+  padding-left: 10em;
+}
 </style>
