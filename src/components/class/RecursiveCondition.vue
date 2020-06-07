@@ -2,14 +2,8 @@
   <span>
     <template v-if="node.type === 'set'">
         <template
-          v-if="move > 0 || node.not"
+          v-if="move > 0"
         >
-          <template
-            v-if="node.not"
-          >
-            <span class="not"></span>
-            <span class="operator">not </span>
-          </template>
           <span class="construct">(</span>
           <br/>
           <span
@@ -45,20 +39,24 @@
 
     <template v-else-if="node.type === 'class'">
         <template>
-          <template
-            v-if="node.not"
-          >
-            <span class="not"></span>
-            <span class="operator">not </span>
-            <span class="construct">(</span>
-          </template>
           <span class="circle"></span>
           <span class="className">{{ node.name }}</span>
-          <template
-            v-if="node.not"
-          >
-            <span class="construct">)</span>
-          </template>
+        </template>
+    </template>
+
+    <template v-else-if="node.type === 'not'">
+        <span class="not"></span>
+        <span class="operator">not </span>
+        <template v-if="node.set.type === 'class'">
+          <span class="construct">(</span>
+        </template>
+        <RecursiveCondition
+          :node="node.set"
+          :move="move"
+        >
+        </RecursiveCondition>
+        <template v-if="node.set.type === 'set'">
+          <span class="construct">)</span>
         </template>
     </template>
 

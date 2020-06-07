@@ -131,9 +131,11 @@ export default {
                         name: 'hasValueE',
                         restriction: 'some',
                         set: {
-                          type: 'class',
-                          name: 'ModifierClassDA',
-                          not: true,
+                          type: 'not',
+                          set: {
+                            type: 'class',
+                            name: 'ModifierClassDA',
+                          },
                         },
                       },
                       {
@@ -141,19 +143,21 @@ export default {
                         name: 'hasValueF',
                         restriction: 'some',
                         set: {
-                          type: 'set',
-                          operator: 'or',
-                          not: true,
-                          set: [
-                            {
-                              type: 'class',
-                              name: 'ModifierClassEA',
-                            },
-                            {
-                              type: 'class',
-                              name: 'ModifierClassEB',
-                            },
-                          ],
+                          type: 'not',
+                          set: {
+                            type: 'set',
+                            operator: 'or',
+                            set: [
+                              {
+                                type: 'class',
+                                name: 'ModifierClassEA',
+                              },
+                              {
+                                type: 'class',
+                                name: 'ModifierClassEB',
+                              },
+                            ],
+                          },
                         },
                       },
                       {
