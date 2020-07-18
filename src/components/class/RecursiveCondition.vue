@@ -55,7 +55,7 @@
           :move="move"
         >
         </RecursiveCondition>
-        <template v-if="node.set.type === 'set'">
+        <template v-if="node.set.type === 'class'">
           <span class="construct">)</span>
         </template>
     </template>
