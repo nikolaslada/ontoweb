@@ -73,54 +73,6 @@ export default class Parser {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getBracketRangeTree(leftBracketList, rightBracketList) {
-    const rightLength = rightBracketList.length;
-    const levelLinks = [];
-    let rangeTree;
-    let i = 0;
-    let j = 0;
-    let levelValue = -1;
-    let left;
-    let right;
-    let range;
-
-    while (j < rightLength) {
-      left = leftBracketList[i];
-      right = rightBracketList[j];
-
-      if (left < right) {
-        levelValue += 1;
-        range = {
-          left,
-          list: [],
-        };
-
-        if (levelValue === 0) {
-          rangeTree = range;
-        } else {
-          levelLinks[levelValue - 1].list.push(range);
-        }
-
-        levelLinks[levelValue] = range;
-        i += 1;
-      } else {
-        if (levelValue < 0) {
-          throw Error(
-            `There must be same number of left and right brackets! Left bracket ${leftBracketList.length} count, right bracket ${rightLength} count.`,
-          );
-        } else {
-          levelLinks[levelValue].right = right;
-        }
-
-        levelValue -= 1;
-        j += 1;
-      }
-    }
-
-    return rangeTree;
-  }
-
   getSubstring(start, end) {
     let result;
 
@@ -149,11 +101,8 @@ export default class Parser {
   // eslint-disable-next-line class-methods-use-this
   isRestrictionType(parsedText) {
     return (
-      parsedText === PARSE_TEXT.SOME_MODIFIER
-      || parsedText === PARSE_TEXT.ONLY_MODIFIER
-      || parsedText === PARSE_TEXT.MIN_MODIFIER
-      || parsedText === PARSE_TEXT.MAX_MODIFIER
-      || parsedText === PARSE_TEXT.EXACTLY_MODIFIER
+      this.isRestrictionClassType(parsedText)
+      || this.isRestrictionNumberType(parsedText)
     );
   }
 
@@ -203,47 +152,6 @@ export default class Parser {
       || Number.isNaN(property)
     ) {
       throw Error('First word in parentheses must be a property!');
-    }
-  }
-
-  getSimplePropertyObject(parsedTextList) {
-    const property = parsedTextList[0];
-    const restriction = parsedTextList[1];
-    const value = parsedTextList[2];
-    this.checkPropertyError(property);
-
-    if (this.isRestrictionClassType(restriction)) {
-      if (
-        this.isJoinOperator(value)
-        || this.isRestrictionType(value)
-        || this.isNot(value)
-        || !Number.isNaN(value)
-      ) {
-        throw Error('It must be a class after some or only restriction!');
-      } else {
-        return {
-          type: DATA_STRUCTURE.PROPERTY,
-          name: property,
-          restriction,
-          set: {
-            type: DATA_STRUCTURE.CLASS,
-            name: value,
-          },
-        };
-      }
-    } else if (this.isRestrictionNumberType(restriction)) {
-      if (!Number.isNaN(value)) {
-        throw Error('It must be a number after min, max or exactly restriction!');
-      } else {
-        return {
-          type: DATA_STRUCTURE.PROPERTY,
-          name: property,
-          restriction,
-          value,
-        };
-      }
-    } else {
-      throw Error('It must be a number after min, max or exactly restriction!');
     }
   }
 
@@ -399,8 +307,6 @@ export default class Parser {
   getObjectFromBracketPair(data) {
     const { length } = data;
     let not;
-    let property;
-    let restriction;
     let subrange;
     let object;
 
@@ -429,23 +335,7 @@ export default class Parser {
 
         break;
       case 3:
-        [property, restriction, subrange] = data;
-
-        if (
-          !this.checkPropertyError(property)
-          || !this.isRestrictionClassType(restriction)
-          || typeof subrange === 'string'
-        ) {
-          throw Error();
-        } else {
-          object = {
-            type: DATA_STRUCTURE.PROPERTY,
-            name: property,
-            restriction,
-            set: this.getConditionObjectRecursive(subrange),
-          };
-        }
-
+        object = this.getPropertyObject(data);
         break;
       default:
         object = this.getObjectRecursive(data);
