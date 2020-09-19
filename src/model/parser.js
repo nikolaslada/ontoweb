@@ -12,17 +12,12 @@ export default class Parser {
     const searchLength = search.length;
     const positionList = [];
     let startIndex = 0;
-    let position;
+    let position = this.text.indexOf(search, startIndex);
 
-    while (true) {
+    while (position > -1) {
+      positionList.push(position);
+      startIndex = position + searchLength;
       position = this.text.indexOf(search, startIndex);
-
-      if (position > -1) {
-        positionList.push(position);
-        startIndex = position + searchLength;
-      } else {
-        break;
-      }
     }
 
     return positionList;
