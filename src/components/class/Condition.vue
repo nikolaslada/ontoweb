@@ -62,8 +62,7 @@ export default {
   },
   methods: {
     onInput(event) {
-      const parser = new Parser();
-      const conditionObject = parser.getConditionObject(event.target.innerText);
+      const conditionObject = this.parser.getConditionObject(event.target.innerText);
       console.log(conditionObject);
     },
   },
@@ -71,6 +70,11 @@ export default {
     getTranslatedCondition() {
       return this.methods.convertToString(this.condition);
     },
+  },
+  data() {
+    return {
+      parser: new Parser(),
+    };
   },
 };
 </script>
