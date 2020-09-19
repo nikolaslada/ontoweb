@@ -1,0 +1,7 @@
+export const URL = {
+  API_ONTOWEB_BO: 'https://',
+};
+
+export const TIMEOUT = {
+  API_ONTOWEB_BO: 15000,
+};
