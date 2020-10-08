@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import RecursiveClass from './RecursiveClass.vue';
+import RecursiveClass from '../RecursiveClass.vue';
 
 export default {
   name: 'ClassTree',
