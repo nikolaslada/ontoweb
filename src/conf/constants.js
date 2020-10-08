@@ -25,3 +25,23 @@ export const NO_GENERAL_API_ERROR = 'NO_GENERAL_API_ERROR';
 export const USE_PROMISE_REJECT = 'USE_PROMISE_REJECT';
 
 export const DATETIME_PATTERN = 'YYYY-MM-DD HH:mm';
+
+export const PATHS = {
+  HOME: '',
+  MY_ONTOLOGIES: 'my-ontologies',
+  CLASSES: 'classes',
+  OBJECT_PROPERTIES: 'properties',
+  INDIVIDUALS: 'individuals',
+  ABOUT: 'about',
+  ERROR: 'error',
+};
+
+export const NAMES = {
+  HOME: 'Home',
+  MY_ONTOLOGIES: 'My Ontologies',
+  CLASSES: 'Classes',
+  OBJECT_PROPERTIES: 'Object Properties',
+  INDIVIDUALS: 'Individuals',
+  ABOUT: 'About',
+  ERROR: 'Error',
+};
