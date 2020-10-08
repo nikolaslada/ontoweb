@@ -1,3 +1,5 @@
+export const BRAND_NAVBAR = 'OntoWeb BO';
+
 export const DATA_STRUCTURE = {
   SET: 's',
   AND: 'a',
