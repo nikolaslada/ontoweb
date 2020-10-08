@@ -28,6 +28,9 @@ export const USE_PROMISE_REJECT = 'USE_PROMISE_REJECT';
 
 export const DATETIME_PATTERN = 'YYYY-MM-DD HH:mm';
 export const DEFAULT_PAGE_SIZE = 20;
+export const MAX_GRID_VALUE_LENGTH = 30;
+export const MAX_PAGER_SIZE = 5;
+export const NO_NUMBER_REPLACEMENT = '–';
 
 export const PATHS = {
   HOME: '',
