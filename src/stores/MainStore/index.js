@@ -1,4 +1,5 @@
 import getters from './getters';
+import mutations from './mutations';
 
 export const initialState = {
   configurationLoading: false,
@@ -13,4 +14,5 @@ export default {
   namespaced: true,
   state: { ...initialState },
   getters,
+  mutations,
 };
