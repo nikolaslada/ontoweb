@@ -1,24 +1,24 @@
 <template>
   <div id="app">
+    <nav-bar/>
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
-    <ClassTreeList/>
-    <ClassItem/>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-import ClassTreeList from './components/ClassTreeList.vue';
-import ClassItem from './components/class/ClassItem.vue';
+import NavBar from './components/NavBar.vue';
+import Footer from './components/Footer.vue';
 
 export default {
   name: 'App',
   components: {
-    ClassTreeList,
-    ClassItem,
+    NavBar,
+    Footer,
   },
 };
 </script>
