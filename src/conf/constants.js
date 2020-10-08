@@ -27,6 +27,7 @@ export const NO_GENERAL_API_ERROR = 'NO_GENERAL_API_ERROR';
 export const USE_PROMISE_REJECT = 'USE_PROMISE_REJECT';
 
 export const DATETIME_PATTERN = 'YYYY-MM-DD HH:mm';
+export const DEFAULT_PAGE_SIZE = 20;
 
 export const PATHS = {
   HOME: '',

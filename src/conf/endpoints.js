@@ -1,6 +1,16 @@
 import api from '../services/api';
 import { URL } from './api';
 
+export const getMyOntologyList = (offset, limit) => (
+  api.get(`${URL.API_ONTOWEB_BO}/my-ontologies`, {
+    baseUrl: URL.API_ONTOWEB_BO,
+    params: {
+      offset,
+      limit,
+    },
+  })
+);
+
 export const getClassTree = (id) => (
   api.get(`${URL.API_ONTOWEB_BO}/class-tree/${id}`, {
     baseUrl: URL.API_ONTOWEB_BO,
