@@ -6,6 +6,7 @@ import {
   REQUEST_START,
   REQUEST_END,
   GET_LANGUAGE_ISO,
+  GET_LOCALE_ISO,
 } from '../stores/MainStore/constants';
 
 import {
@@ -37,13 +38,16 @@ api.interceptors.request.use((config) => {
   vueInstance.$noCycleStore.commit(`MainStore/${REQUEST_START}`);
 
   const languageIso = vueInstance.$noCycleStore.getters[`MainStore/${GET_LANGUAGE_ISO}`];
+  const localeIso = vueInstance.$noCycleStore.getters[`MainStore/${GET_LOCALE_ISO}`];
   const adjustedConfig = {
     ...config,
     headers: {
       ...(config.headers || {}),
       common: {
         'language-iso': languageIso,
+        'locale-iso': localeIso,
         'Content-Type': 'application/json',
+        // apiaryApiKey: '',
       },
     },
   };
