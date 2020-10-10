@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <nav-bar/>
+    <Loader v-if="isLoading" />
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -11,14 +12,26 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import NavBar from './components/NavBar.vue';
+import Loader from './components/Loader.vue';
 import Footer from './components/Footer.vue';
+
+import {
+  IS_REQUEST_LOADING,
+} from './stores/MainStore/constants';
 
 export default {
   name: 'App',
   components: {
     NavBar,
+    Loader,
     Footer,
+  },
+  computed: {
+    ...mapGetters('MainStore', {
+      isLoading: IS_REQUEST_LOADING,
+    }),
   },
 };
 </script>

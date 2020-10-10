@@ -6,3 +6,4 @@ export const REQUEST_END = 'REQUEST_END';
 export const GET_LANGUAGE_ISO = 'langIso';
 export const GET_LOCALE_ISO = 'localeIso';
 export const HAS_PERMISSION = 'hasPermission';
+export const IS_REQUEST_LOADING = 'IS_REQUEST_LOADING';
