@@ -122,6 +122,32 @@ export function initialState() {
         ],
       },
     },
+    whisperList: [
+      {
+        id: 1,
+        title: 'hasValueXYZ',
+        class: 'success',
+        type: 'Property',
+      },
+      {
+        id: 2,
+        title: 'some',
+        class: 'danger',
+        type: 'Restriction',
+      },
+      {
+        id: 3,
+        title: 'ModifierClassXYZ',
+        class: 'warning',
+        type: 'Class',
+      },
+      {
+        id: 2,
+        title: 'or',
+        class: 'info',
+        type: 'Operator',
+      },
+    ],
   };
 }
 

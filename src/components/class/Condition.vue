@@ -5,7 +5,7 @@
         <h4>Condition</h4>
         <div class="container">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-8">
               <div
                 class="code"
                 contenteditable="true"
@@ -18,8 +18,11 @@
                 </RecursiveCondition>
               </div>
             </div>
-            <div class="col-sm-6">
-              TEST
+            <div class="col-sm-4">
+              <Whisperer
+                :uid="'class-condition'"
+                :whisper-list="whisperList"
+              />
             </div>
           </div>
         </div>
@@ -34,6 +37,7 @@
 
 <script>
 import {
+  mapState,
   mapMutations,
 } from 'vuex';
 
@@ -42,6 +46,7 @@ import {
 } from '../../stores/ClassStore/constants';
 
 import RecursiveCondition from './RecursiveCondition.vue';
+import Whisperer from './Whisperer.vue';
 import Parser from '../../model/parser';
 
 export default {
@@ -53,6 +58,7 @@ export default {
   },
   components: {
     RecursiveCondition,
+    Whisperer,
   },
   methods: {
     ...mapMutations(
@@ -69,6 +75,13 @@ export default {
 
   },
   computed: {
+    ...mapState(
+      'ClassStore',
+      {
+        whisperList: (state) => state.whisperList,
+      },
+    ),
+
     getTranslatedCondition() {
       return this.methods.convertToString(this.condition);
     },
