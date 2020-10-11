@@ -5,6 +5,8 @@ import {
 
 export function initialState() {
   return {
+    classTree: {
+    },
     classNode: {
       name: 'owl:Thing',
       created: moment('2020-01-13 12:00:00').format(DATETIME_PATTERN),
