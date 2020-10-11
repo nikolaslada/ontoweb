@@ -4,11 +4,11 @@ import {
 
 import {
   FETCH_MY_ONTOLOGY_LIST,
-  SET_ACTIVE,
+  SET_SELECTED,
   SET_LOADING,
   SET_LIST,
   SET_PAGINATION,
-  UPDATE_ACTIVE,
+  UPDATE_SELECTED,
 } from './constants';
 
 import {
@@ -56,7 +56,7 @@ export default {
     }
   },
 
-  async [UPDATE_ACTIVE](
+  async [UPDATE_SELECTED](
     { commit },
     {
       id,
@@ -69,7 +69,7 @@ export default {
 
     const { data } = await getOntology(id);
 
-    commit(SET_ACTIVE, data[0]);
+    commit(SET_SELECTED, data[0]);
 
     if (useLoader) {
       commit(SET_LOADING, false);

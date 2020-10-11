@@ -48,20 +48,20 @@
 
           <td>
             <button
-              v-if="isOntologyActive(v.id)"
+              v-if="isOntologySelected(v.id)"
               class="btn btn-sm disabled"
             >
-              Active
+              Selected
               <b-icon-toggle2-on>
               </b-icon-toggle2-on>
             </button>
 
             <button
               v-else
-              @click="activateOntologyById(v.id)"
+              @click="selectOntologyById(v.id)"
               class="btn btn-sm btn-primary"
             >
-              Activate
+              Select
               <b-icon-toggle2-off>
               </b-icon-toggle2-off>
             </button>
@@ -93,7 +93,7 @@ import {
 
 import {
   FETCH_MY_ONTOLOGY_LIST,
-  UPDATE_ACTIVE,
+  UPDATE_SELECTED,
 } from '../../stores/MyOntologyStore/constants';
 
 export default {
@@ -121,7 +121,7 @@ export default {
     ...mapState('MyOntologyStore', [
       'list',
       'pagination',
-      'active',
+      'selected',
     ]),
 
     numberFormat() {
@@ -155,15 +155,15 @@ export default {
   methods: {
     ...mapActions('MyOntologyStore', {
       fetchMyOntologyList: FETCH_MY_ONTOLOGY_LIST,
-      updateActive: UPDATE_ACTIVE,
+      updateSelected: UPDATE_SELECTED,
     }),
 
-    isOntologyActive(id) {
-      return this.active.id === id;
+    isOntologySelected(id) {
+      return this.selected.id === id;
     },
 
-    activateOntologyById(id) {
-      this.updateActive({ id });
+    selectOntologyById(id) {
+      this.updateSelected({ id });
     },
 
     changeMyOntologiesPage(pageNumber) {

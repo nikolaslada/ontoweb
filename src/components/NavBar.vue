@@ -15,9 +15,9 @@
         <router-link to="/about" tag="li" class="nav-item" active-class="active">
           <a class="nav-link" href="#">{{ NAMES.ABOUT }}</a>
         </router-link>
-        <li v-if="activeOntology && activeOntology.name" class="nav-item">
+        <li v-if="selected.name" class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
-            Choosed Ontology: {{ activeOntology.name }}
+            Selected Ontology: <strong>{{ selected.name }}</strong>
           </a>
         </li>
       </ul>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import {
   BRAND_NAVBAR,
   NAMES,
@@ -33,13 +35,16 @@ import {
 
 export default {
   name: 'NavBar',
+  computed: {
+    ...mapState('MyOntologyStore', [
+      'selected',
+    ]),
+
+  },
   data() {
     return {
       BRAND_NAVBAR,
       NAMES,
-      activeOntology: {
-        name: 'Test Ontology',
-      },
     };
   },
 };
