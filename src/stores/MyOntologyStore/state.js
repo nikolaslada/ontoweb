@@ -7,4 +7,6 @@ export default () => ({
     orderType: 'asc',
   },
   list: [],
+  active: {
+  },
 });

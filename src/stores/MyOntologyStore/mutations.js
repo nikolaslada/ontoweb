@@ -4,6 +4,7 @@ import {
   SET_LOADING,
   SET_LIST,
   SET_PAGINATION,
+  SET_ACTIVE,
 } from './constants';
 
 export default {
@@ -21,5 +22,8 @@ export default {
   },
   [SET_PAGINATION](state, values) {
     Vue.set(state, 'pagination', values);
+  },
+  [SET_ACTIVE](state, values) {
+    Vue.set(state, 'active', values);
   },
 };

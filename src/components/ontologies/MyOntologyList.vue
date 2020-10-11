@@ -15,8 +15,8 @@
       </thead>
       <tbody>
         <tr
-          v-for="(v, k) in list"
-          :key="k"
+          v-for="v in list"
+          :key="v.id"
         >
           <td v-if="v.name.length < MAX_GRID_VALUE_LENGTH + 1" class="text-left">
             {{ v.name }}
@@ -46,7 +46,26 @@
             {{ NO_NUMBER_REPLACEMENT }}
           </td>
 
-          <td></td>
+          <td>
+            <button
+              v-if="isOntologyActive(v.id)"
+              class="btn btn-sm disabled"
+            >
+              Active
+              <b-icon-toggle2-on>
+              </b-icon-toggle2-on>
+            </button>
+
+            <button
+              v-else
+              @click="activateOntologyById(v.id)"
+              class="btn btn-sm btn-primary"
+            >
+              Activate
+              <b-icon-toggle2-off>
+              </b-icon-toggle2-off>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -74,6 +93,7 @@ import {
 
 import {
   FETCH_MY_ONTOLOGY_LIST,
+  UPDATE_ACTIVE,
 } from '../../stores/MyOntologyStore/constants';
 
 export default {
@@ -101,6 +121,7 @@ export default {
     ...mapState('MyOntologyStore', [
       'list',
       'pagination',
+      'active',
     ]),
 
     numberFormat() {
@@ -134,7 +155,16 @@ export default {
   methods: {
     ...mapActions('MyOntologyStore', {
       fetchMyOntologyList: FETCH_MY_ONTOLOGY_LIST,
+      updateActive: UPDATE_ACTIVE,
     }),
+
+    isOntologyActive(id) {
+      return this.active.id === id;
+    },
+
+    activateOntologyById(id) {
+      this.updateActive({ id });
+    },
 
     changeMyOntologiesPage(pageNumber) {
       if (!Number.isInteger(pageNumber)) {

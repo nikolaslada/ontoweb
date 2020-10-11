@@ -11,6 +11,12 @@ export const getMyOntologyList = (offset, limit) => (
   })
 );
 
+export const getOntology = (id) => (
+  api.get(`${URL.API_ONTOWEB_BO}/ontology/${id}`, {
+    baseUrl: URL.API_ONTOWEB_BO,
+  })
+);
+
 export const getClassTree = (id) => (
   api.get(`${URL.API_ONTOWEB_BO}/class-tree/${id}`, {
     baseUrl: URL.API_ONTOWEB_BO,

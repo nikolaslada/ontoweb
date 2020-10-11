@@ -3,14 +3,17 @@ import {
 } from '../../conf/constants';
 
 import {
-  SET_LOADING,
   FETCH_MY_ONTOLOGY_LIST,
-  SET_PAGINATION,
+  SET_ACTIVE,
+  SET_LOADING,
   SET_LIST,
+  SET_PAGINATION,
+  UPDATE_ACTIVE,
 } from './constants';
 
 import {
   getMyOntologyList,
+  getOntology,
 } from '../../conf/endpoints';
 
 export default {
@@ -53,4 +56,23 @@ export default {
     }
   },
 
+  async [UPDATE_ACTIVE](
+    { commit },
+    {
+      id,
+      useLoader = true,
+    } = {},
+  ) {
+    if (useLoader) {
+      commit(SET_LOADING, true);
+    }
+
+    const { data } = await getOntology(id);
+
+    commit(SET_ACTIVE, data[0]);
+
+    if (useLoader) {
+      commit(SET_LOADING, false);
+    }
+  },
 };
