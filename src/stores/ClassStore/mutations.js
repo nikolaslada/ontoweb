@@ -1,10 +1,12 @@
 import Vue from 'vue';
+import ClassDetailFactory from '../../model/ClassDetailFactory';
 
 import {
   SET_LOADING,
   SET_TREE,
   SET_TREE_COUNT,
-  UPDATE_CLASS_NODE,
+  SET_CLASS_DETAIL,
+  SET_SELECTED_CLASS_ID,
 } from './constants';
 
 export default {
@@ -23,7 +25,11 @@ export default {
   [SET_TREE_COUNT](state, values) {
     Vue.set(state, 'count', values);
   },
-  [UPDATE_CLASS_NODE](state, value) {
-    Vue.set(state, 'classNode', value);
+  [SET_CLASS_DETAIL](state, value) {
+    const classDetail = ClassDetailFactory.createClassDetail(value);
+    Vue.set(state, 'classDetail', classDetail);
+  },
+  [SET_SELECTED_CLASS_ID](state, values) {
+    Vue.set(state, 'selectedClassId', values);
   },
 };

@@ -1,10 +1,10 @@
 import {
-  SET_LOADING,
+  FETCH_CLASS_DETAIL,
   FETCH_CLASS_TREE,
+  SET_CLASS_DETAIL,
+  SET_LOADING,
   SET_TREE_COUNT,
   SET_TREE,
-  GET_CLASS_NODE,
-  SET_CLASS_NODE,
 } from './constants';
 
 import {
@@ -35,9 +35,25 @@ export default {
     }
   },
 
-  async [GET_CLASS_NODE]({ commit }, id) {
-    const { data = {} } = await getClassNode(id);
-    commit(SET_CLASS_NODE, data);
+  async [FETCH_CLASS_DETAIL](
+    { commit },
+    {
+      id,
+      useLoader = true,
+    } = {},
+  ) {
+    if (useLoader) {
+      commit(SET_LOADING, true);
+    }
+
+    const { data } = await getClassNode(id);
+    const classNode = data[0];
+
+    commit(SET_CLASS_DETAIL, classNode);
+
+    if (useLoader) {
+      commit(SET_LOADING, false);
+    }
   },
 
 };

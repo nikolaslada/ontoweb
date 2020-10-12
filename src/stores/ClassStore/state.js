@@ -5,12 +5,10 @@ import {
 
 export function initialState() {
   return {
-    classTree: {
-    },
-    classNode: {
+    classDetail: {
       name: 'owl:Thing',
-      created: moment('2020-01-13 12:00:00').format(DATETIME_PATTERN),
-      updated: null,
+      createdAt: moment('2020-01-13 12:00:00').format(DATETIME_PATTERN),
+      updatedAt: null,
       translationList: [
         {
           iso: 'en',
@@ -124,6 +122,10 @@ export function initialState() {
         ],
       },
     },
+    classTree: {
+    },
+    count: null,
+    selectedClassId: null,
     whisperList: [
       {
         id: 1,

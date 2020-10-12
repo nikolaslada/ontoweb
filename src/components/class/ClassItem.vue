@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>{{ data.name }}</h2>
-    <p v-if="data.created">{{ date(data.created) }}</p>
-    <p v-if="data.updated">{{ date(data.updated) }}</p>
+    <p>{{ data.createdAt }}</p>
+    <p v-if="data.updatedAt">{{ data.updatedAt }}</p>
     <div
       v-if="data.translationList && data.translationList.length"
     >
@@ -44,27 +44,46 @@
 <script>
 import {
   mapState,
+  mapActions,
 } from 'vuex';
-import moment from 'moment';
+
 import Condition from './Condition.vue';
+
+import {
+  FETCH_CLASS_DETAIL,
+} from '../../stores/ClassStore/constants';
 
 export default {
   name: 'ClassItem',
   components: {
     Condition,
   },
-  methods: {
-    date(date) {
-      return moment(date).format('YYYY-MM-DD hh:mm:ss');
-    },
-  },
   computed: {
     ...mapState(
       'ClassStore',
       {
-        data: (state) => state.classNode,
+        data: (state) => state.classDetail,
+        selected: (state) => state.selectedClassId,
       },
     ),
+
+  },
+  watch: {
+    selected(id) {
+      if (id) {
+        this.fetchClassDetail({ id });
+      }
+    },
+
+  },
+  methods: {
+    ...mapActions(
+      'ClassStore',
+      {
+        fetchClassDetail: FETCH_CLASS_DETAIL,
+      },
+    ),
+
   },
 };
 </script>
