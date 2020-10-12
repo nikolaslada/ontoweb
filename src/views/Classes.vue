@@ -4,14 +4,14 @@
       v-if="count"
       :tree="classTree"
     />
-    <ClassItem/>
+    <ClassDetail/>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import ClassTreeList from '../components/classTree/ClassTreeList.vue';
-import ClassItem from '../components/class/ClassItem.vue';
+import ClassDetail from '../components/class/ClassDetail.vue';
 
 import {
   FETCH_CLASS_TREE,
@@ -21,7 +21,7 @@ export default {
   name: 'Classes',
   components: {
     ClassTreeList,
-    ClassItem,
+    ClassDetail,
   },
   mounted() {
     if (this.selected.id) {

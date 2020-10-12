@@ -54,7 +54,7 @@ import {
 } from '../../stores/ClassStore/constants';
 
 export default {
-  name: 'ClassItem',
+  name: 'ClassDetail',
   components: {
     Condition,
   },
