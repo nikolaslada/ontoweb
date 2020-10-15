@@ -1,9 +1,9 @@
 <template>
   <div>
     <template v-if="true">
+      <h4>Condition</h4>
       <div class="jumbotron">
-        <h4>Condition</h4>
-        <div class="container">
+        <div class="container-fluid">
           <div class="row">
             <div class="col-sm-8">
               <div

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <b>Class Tree List</b>
+  <div class="text-left">
+    <h2>Class Tree List</h2>
     <ClassTree
       :tree="tree"
     >

@@ -1,10 +1,16 @@
 <template>
-  <div class="home">
-    <ClassTreeList
-      v-if="count"
-      :tree="classTree"
-    />
-    <ClassDetail/>
+  <div class="container-fluid">
+    <div class="row" >
+      <div class="col-sm-3">
+        <ClassTreeList
+          v-if="count"
+          :tree="classTree"
+        />
+      </div>
+      <div class="col-sm-9">
+        <ClassDetail/>
+      </div>
+    </div>
   </div>
 </template>
 
