@@ -1,3 +1,5 @@
+import ClassDetailFactory from '../../model/ClassDetailFactory';
+
 import {
   FETCH_CLASS_DETAIL,
   FETCH_CLASS_TREE,
@@ -5,11 +7,14 @@ import {
   SET_LOADING,
   SET_TREE_COUNT,
   SET_TREE,
+  SET_WHISPER_LIST,
+  CHECK_CONDITION,
 } from './constants';
 
 import {
   getClassTree,
   getClassNode,
+  checkCondition,
 } from '../../conf/endpoints';
 
 export default {
@@ -50,6 +55,36 @@ export default {
     const classNode = data[0];
 
     commit(SET_CLASS_DETAIL, classNode);
+
+    if (useLoader) {
+      commit(SET_LOADING, false);
+    }
+  },
+
+  async [CHECK_CONDITION](
+    { commit, state },
+    {
+      id,
+      condition = {},
+      useLoader = true,
+    } = {},
+  ) {
+    if (useLoader) {
+      commit(SET_LOADING, true);
+    }
+
+    const {
+      data: [
+        { condition: conditionResponse },
+        { whisperList = [] },
+      ],
+    } = await checkCondition(id, condition);
+
+    const { classDetail } = state;
+    classDetail.condition = conditionResponse;
+
+    commit(SET_CLASS_DETAIL, classDetail);
+    commit(SET_WHISPER_LIST, ClassDetailFactory.createWhisperList(whisperList));
 
     if (useLoader) {
       commit(SET_LOADING, false);

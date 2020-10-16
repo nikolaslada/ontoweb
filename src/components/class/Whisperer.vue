@@ -11,7 +11,7 @@
       href
       class="list-group-item list-group-item-action"
     >
-      {{ v.title }}
+      {{ v.value }}
       <span
         :class="`badge-${v.class}`"
         class="badge badge-pill"

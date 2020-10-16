@@ -35,6 +35,12 @@ export const partialEditClassNode = (id, payload) => (
   })
 );
 
+export const checkCondition = (id, payload) => (
+  api.put(`${URL.API_ONTOWEB_BO}/check-condition/${id}`, payload, {
+    baseUrl: URL.API_ONTOWEB_BO,
+  })
+);
+
 export const deleteClassNode = (id) => (
   api.delete(`${URL.API_ONTOWEB_BO}/class-node/${id}`, {
     baseUrl: URL.API_ONTOWEB_BO,

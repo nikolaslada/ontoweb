@@ -7,6 +7,7 @@ import {
   SET_TREE_COUNT,
   SET_CLASS_DETAIL,
   SET_SELECTED_CLASS_ID,
+  SET_WHISPER_LIST,
 } from './constants';
 
 export default {
@@ -31,5 +32,8 @@ export default {
   },
   [SET_SELECTED_CLASS_ID](state, values) {
     Vue.set(state, 'selectedClassId', values);
+  },
+  [SET_WHISPER_LIST](state, values) {
+    Vue.set(state, 'whisperList', values);
   },
 };

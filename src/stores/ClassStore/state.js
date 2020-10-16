@@ -129,25 +129,25 @@ export function initialState() {
     whisperList: [
       {
         id: 1,
-        title: 'hasValueXYZ',
+        value: 'hasValueXYZ',
         class: 'success',
         type: 'Property',
       },
       {
         id: 2,
-        title: 'some',
+        value: 'some',
         class: 'danger',
         type: 'Restriction',
       },
       {
         id: 3,
-        title: 'ModifierClassXYZ',
+        value: 'ModifierClassXYZ',
         class: 'warning',
         type: 'Class',
       },
       {
         id: 2,
-        title: 'or',
+        value: 'or',
         class: 'info',
         type: 'Operator',
       },

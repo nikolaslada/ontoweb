@@ -94,6 +94,10 @@ export default {
   color: black;
 }
 
+.placeholderValue {
+  background-color: yellowgreen;
+}
+
 [data-move='1'] {
   padding-left: 2em;
 }

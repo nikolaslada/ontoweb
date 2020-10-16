@@ -38,10 +38,12 @@
 <script>
 import {
   mapState,
+  mapActions,
   mapMutations,
 } from 'vuex';
 
 import {
+  CHECK_CONDITION,
   UPDATE_CLASS_NODE,
 } from '../../stores/ClassStore/constants';
 
@@ -61,6 +63,13 @@ export default {
     Whisperer,
   },
   methods: {
+    ...mapActions(
+      'ClassStore',
+      {
+        checkCondition: CHECK_CONDITION,
+      },
+    ),
+
     ...mapMutations(
       'ClassStore',
       {
@@ -69,8 +78,11 @@ export default {
     ),
 
     onChangeCondition(event) {
-      const conditionObject = this.parser.getConditionObject(event.target.innerText);
-      this.updateClassNode(conditionObject);
+      const condition = this.parser.getConditionObject(event.target.innerText);
+      this.checkCondition({
+        id: this.classId,
+        condition,
+      });
     },
 
   },
@@ -78,6 +90,7 @@ export default {
     ...mapState(
       'ClassStore',
       {
+        classId: (state) => state.selectedClassId,
         whisperList: (state) => state.whisperList,
       },
     ),

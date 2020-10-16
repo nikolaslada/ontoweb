@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Util from './Util';
 
 import {
   DATETIME_PATTERN,
@@ -6,13 +7,7 @@ import {
 
 export default class ClassDetailFactory {
   static createClassDetail(objectOrList) {
-    let data;
-
-    if (Array.isArray(objectOrList)) {
-      [data = {}] = objectOrList;
-    } else {
-      data = objectOrList;
-    }
+    const data = Util.getObjectFromData(objectOrList);
 
     if (
       !data.name
@@ -82,5 +77,55 @@ export default class ClassDetailFactory {
     }
 
     return object;
+  }
+
+  static createWhisperList(list) {
+    const whisperList = [];
+
+    for (let i = 0; i < list.length; i += 1) {
+      whisperList.push(this.createWhisper(list[i]));
+    }
+
+    return whisperList;
+  }
+
+  static createWhisper(objectOrList) {
+    const data = Util.getObjectFromData(objectOrList);
+
+    if (
+      !data.id
+      || !data.type
+      || !data.value
+    ) {
+      throw Error('id, type or value attribute is not contained in Whisper object');
+    }
+
+    const whisper = {
+      id: data.id,
+      value: data.value,
+    };
+
+    switch (data.type) {
+      case 'o':
+        whisper.type = 'Operator';
+        whisper.class = 'info';
+        break;
+      case 'c':
+        whisper.type = 'Class';
+        whisper.class = 'warning';
+        break;
+      case 'p':
+        whisper.type = 'Property';
+        whisper.class = 'success';
+        break;
+      case 'r':
+        whisper.type = 'Restriction';
+        whisper.class = 'danger';
+        break;
+      default:
+        throw Error('Unsupported whisper type value.');
+    }
+
+    return whisper;
   }
 }

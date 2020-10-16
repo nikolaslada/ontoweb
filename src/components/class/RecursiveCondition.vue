@@ -91,6 +91,10 @@
       <span class="construct">)</span>
     </template>
 
+    <template v-else-if="node.type === 'placeholder'">
+      <span class="placeholderValue">{{ node.value }}</span>
+    </template>
+
     <template v-else>
       <span>
         ERROR
