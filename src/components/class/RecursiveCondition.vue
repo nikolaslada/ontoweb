@@ -94,7 +94,7 @@
       <span class="propertyName">{{ node.name }} </span>
       <span class="propertyRestriction">{{ node.restriction }} </span>
       <span class="propertyValue">{{ node.value }}</span>
-      <span class="construct d">)</span>
+      <span class="construct">)</span>
     </template>
 
     <template v-else-if="node.type === 'placeholder'">
