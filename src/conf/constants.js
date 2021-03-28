@@ -1,12 +1,13 @@
 export const BRAND_NAVBAR = 'OntoWeb BO';
 
 export const DATA_STRUCTURE = {
-  SET: 's',
-  AND: 'a',
-  OR: 'o',
-  NOT: 'n',
-  CLASS: 'c',
-  PROPERTY: 'p',
+  SET: 'set',
+  AND: 'and',
+  OR: 'or',
+  NOT: 'not',
+  CLASS: 'class',
+  PROPERTY: 'prop',
+  PLACEHOLDER: 'placeholder',
 };
 
 export const PARSE_TEXT = {

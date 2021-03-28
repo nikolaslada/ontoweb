@@ -1,6 +1,6 @@
 <template>
   <span>
-    <template v-if="node.type === 'set'">
+    <template v-if="node.type === DATA_STRUCTURE.SET">
         <template
           v-if="move > 0"
         >
@@ -44,17 +44,17 @@
         >)</span>
     </template>
 
-    <template v-else-if="node.type === 'class'">
+    <template v-else-if="node.type === DATA_STRUCTURE.CLASS">
         <template>
           <span class="circle"></span>
           <span class="className">{{ node.name }}</span>
         </template>
     </template>
 
-    <template v-else-if="node.type === 'not'">
+    <template v-else-if="node.type === DATA_STRUCTURE.NOT">
         <span class="not"></span>
         <span class="operator">not </span>
-        <template v-if="node.set.type === 'class'">
+        <template v-if="node.set.type === DATA_STRUCTURE.CLASS">
           <span class="construct">(</span>
         </template>
         <RecursiveCondition
@@ -62,12 +62,12 @@
           :move="move"
         >
         </RecursiveCondition>
-        <template v-if="node.set.type === 'class'">
+        <template v-if="node.set.type === DATA_STRUCTURE.CLASS">
           <span class="construct">)</span>
         </template>
     </template>
 
-    <template v-else-if="node.type === 'property' && node.set">
+    <template v-else-if="node.type === DATA_STRUCTURE.PROPERTY && node.set">
       <span class="propertyUse">
         <span class="construct">(</span>
         <span class="propertyName">{{ node.name }} </span>
@@ -89,7 +89,7 @@
       </span>
     </template>
 
-    <template v-else-if="node.type === 'property' && node.value">
+    <template v-else-if="node.type === DATA_STRUCTURE.PROPERTY && node.value">
       <span class="construct">(</span>
       <span class="propertyName">{{ node.name }} </span>
       <span class="propertyRestriction">{{ node.restriction }} </span>
@@ -97,7 +97,7 @@
       <span class="construct">)</span>
     </template>
 
-    <template v-else-if="node.type === 'placeholder'">
+    <template v-else-if="node.type === DATA_STRUCTURE.PLACEHOLDER">
       <span class="placeholderValue">{{ node.value }}</span>
     </template>
 
@@ -111,11 +111,20 @@
 </template>
 
 <script>
+import {
+  DATA_STRUCTURE,
+} from '../../conf/constants';
+
 export default {
   name: 'RecursiveCondition',
   props: {
     node: Object,
     move: Number,
+  },
+  data() {
+    return {
+      DATA_STRUCTURE,
+    };
   },
   methods: {
     getMove(current) {

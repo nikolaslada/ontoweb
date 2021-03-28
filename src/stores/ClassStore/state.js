@@ -32,7 +32,7 @@ export function initialState() {
             name: 'PrimitiveClassA',
           },
           {
-            type: 'property',
+            type: 'prop',
             name: 'hasValueA',
             restriction: 'some',
             set: {
@@ -47,7 +47,7 @@ export function initialState() {
             },
           },
           {
-            type: 'property',
+            type: 'prop',
             name: 'hasValueB',
             restriction: 'some',
             set: {
@@ -62,7 +62,7 @@ export function initialState() {
             },
           },
           {
-            type: 'property',
+            type: 'prop',
             name: 'hasValueC',
             restriction: 'some',
             set: {
@@ -78,7 +78,7 @@ export function initialState() {
                   op: 'or',
                   list: [
                     {
-                      type: 'property',
+                      type: 'prop',
                       name: 'hasValueD',
                       restriction: 'some',
                       set: {
@@ -93,7 +93,7 @@ export function initialState() {
                       },
                     },
                     {
-                      type: 'property',
+                      type: 'prop',
                       name: 'hasValueE',
                       restriction: 'some',
                       set: {
@@ -105,7 +105,7 @@ export function initialState() {
                       },
                     },
                     {
-                      type: 'property',
+                      type: 'prop',
                       name: 'hasValueF',
                       restriction: 'some',
                       set: {
@@ -127,7 +127,7 @@ export function initialState() {
                       },
                     },
                     {
-                      type: 'property',
+                      type: 'prop',
                       name: 'hasValueG',
                       restriction: 'min',
                       value: 2,
