@@ -167,7 +167,7 @@ export function initialState() {
         id: 2,
         value: 'or',
         class: 'info',
-        type: 'op',
+        type: 'Op',
       },
     ],
   };
