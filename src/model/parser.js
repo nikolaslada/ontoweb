@@ -210,8 +210,8 @@ export default class Parser {
           object = {
             type: DATA_STRUCTURE.PROPERTY,
             name: property,
-            restriction,
             set: this.getObjectRecursive(value),
+            restriction,
           };
         } else if (this.isRestrictionNumberType(restriction)) {
           if (Number.isNaN(value)) {
@@ -236,8 +236,8 @@ export default class Parser {
         object = {
           type: DATA_STRUCTURE.PROPERTY,
           name: property,
-          restriction,
           set: this.getNotObject(value),
+          restriction,
         };
         break;
       default:
