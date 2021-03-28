@@ -298,29 +298,29 @@ export default class Parser {
   getObjectFromBracketPair(data) {
     const { length } = data;
     let not;
-    let subrange;
+    let subRange;
     let object;
 
     switch (length) {
       case 1:
-        [subrange] = data;
+        [subRange] = data;
 
-        if (Array.isArray(subrange)) {
-          object = this.getConditionObjectRecursive(subrange);
+        if (Array.isArray(subRange)) {
+          object = this.getConditionObjectRecursive(subRange);
         } else {
-          throw Error(`There must be only parenthesis! Current value ${subrange}`);
+          throw Error(`There must be only parenthesis! Current value ${subRange}`);
         }
 
         break;
       case 2:
-        [not, subrange] = data;
+        [not, subRange] = data;
 
-        if (not !== PARSE_TEXT.NOT_OPERATOR || typeof subrange === 'string') {
+        if (not !== PARSE_TEXT.NOT_OPERATOR || typeof subRange === 'string') {
           throw Error(`After ${PARSE_TEXT.NOT_OPERATOR} must be only parenthesis!`);
         } else {
           object = {
             type: DATA_STRUCTURE.NOT,
-            set: this.getConditionObjectRecursive(subrange),
+            set: this.getConditionObjectRecursive(subRange),
           };
         }
 
