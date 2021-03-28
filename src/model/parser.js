@@ -255,13 +255,12 @@ export default class Parser {
     const list = [];
     let item;
     let operator;
-    let object;
     let i = 0;
 
     if (length === 1) {
-      object = this.getClassObject(data[0]);
+      list.push(this.getClassObject(data[0]));
     } else if (length >= 3 && length <= 4 && this.isRestrictionType(data[1])) {
-      object = this.getPropertyObject(data);
+      list.push(this.getPropertyObject(data));
     } else if (length > 1) {
       while (i < length) {
         item = data[i];
@@ -279,21 +278,18 @@ export default class Parser {
         } else if (this.isOdd(i)) {
           throw Error('There must not be brackets on an even position!');
         } else {
-          data.join('=');
           list.push(this.getObjectRecursive(item));
         }
 
         i += 1;
       }
-
-      object = {
-        type: DATA_STRUCTURE.SET,
-        op: operator,
-        set: list,
-      };
     }
 
-    return object;
+    return {
+      type: DATA_STRUCTURE.SET,
+      op: operator,
+      list,
+    };
   }
 
   /**
@@ -324,7 +320,7 @@ export default class Parser {
         } else {
           object = {
             type: DATA_STRUCTURE.NOT,
-            set: this.getConditionObjectRecurfsive(subrange),
+            set: this.getConditionObjectRecursive(subrange),
           };
         }
 

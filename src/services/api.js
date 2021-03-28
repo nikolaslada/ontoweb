@@ -47,7 +47,7 @@ api.interceptors.request.use((config) => {
         'language-iso': languageIso,
         'locale-iso': localeIso,
         'Content-Type': 'application/json',
-        // apiaryApiKey: '',
+        apiaryApiKey: '449b5edfee9742548b398d952c40db44',
       },
     },
   };

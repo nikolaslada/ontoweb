@@ -25,8 +25,8 @@ export function initialState() {
       ],
       condition: {
         type: 'set',
-        operator: 'and',
-        set: [
+        op: 'and',
+        list: [
           {
             type: 'class',
             name: 'PrimitiveClassA',
@@ -36,8 +36,14 @@ export function initialState() {
             name: 'hasValueA',
             restriction: 'some',
             set: {
-              type: 'class',
-              name: 'ModifierClassAA',
+              type: 'set',
+              op: 'and',
+              list: [
+                {
+                  type: 'class',
+                  name: 'ModifierClassAA',
+                },
+              ],
             },
           },
           {
@@ -45,8 +51,14 @@ export function initialState() {
             name: 'hasValueB',
             restriction: 'some',
             set: {
-              type: 'class',
-              name: 'ModifierClassBA',
+              type: 'set',
+              op: 'and',
+              list: [
+                {
+                  type: 'class',
+                  name: 'ModifierClassBA',
+                },
+              ],
             },
           },
           {
@@ -55,23 +67,29 @@ export function initialState() {
             restriction: 'some',
             set: {
               type: 'set',
-              operator: 'and',
-              set: [
+              op: 'and',
+              list: [
                 {
                   type: 'class',
                   name: 'PrimitiveClassB',
                 },
                 {
                   type: 'set',
-                  operator: 'or',
-                  set: [
+                  op: 'or',
+                  list: [
                     {
                       type: 'property',
                       name: 'hasValueD',
                       restriction: 'some',
                       set: {
-                        type: 'class',
-                        name: 'ModifierClassCA',
+                        type: 'set',
+                        op: 'and',
+                        list: [
+                          {
+                            type: 'class',
+                            name: 'ModifierClassCA',
+                          },
+                        ],
                       },
                     },
                     {
@@ -94,8 +112,8 @@ export function initialState() {
                         type: 'not',
                         set: {
                           type: 'set',
-                          operator: 'or',
-                          set: [
+                          op: 'or',
+                          list: [
                             {
                               type: 'class',
                               name: 'ModifierClassEA',
@@ -149,7 +167,7 @@ export function initialState() {
         id: 2,
         value: 'or',
         class: 'info',
-        type: 'Operator',
+        type: 'op',
       },
     ],
   };
