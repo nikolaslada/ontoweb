@@ -80,20 +80,13 @@ export default class Parser {
     return result;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  isOdd(number) {
-    return (number % 2) === 1;
-  }
+  isOdd = (number) => (number % 2) === 1;
 
-  // eslint-disable-next-line class-methods-use-this
-  isJoinOperator(parsedText) {
-    return (
-      parsedText === PARSE_TEXT.AND_OPERATOR
-      || parsedText === PARSE_TEXT.OR_OPERATOR
-    );
-  }
+  isJoinOperator = (parsedText) => (
+    parsedText === PARSE_TEXT.AND_OPERATOR
+    || parsedText === PARSE_TEXT.OR_OPERATOR
+  );
 
-  // eslint-disable-next-line class-methods-use-this
   isRestrictionType(parsedText) {
     return (
       this.isRestrictionClassType(parsedText)
@@ -101,27 +94,18 @@ export default class Parser {
     );
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  isRestrictionClassType(parsedText) {
-    return (
-      parsedText === PARSE_TEXT.SOME_MODIFIER
-      || parsedText === PARSE_TEXT.ONLY_MODIFIER
-    );
-  }
+  isRestrictionClassType = (parsedText) => (
+    parsedText === PARSE_TEXT.SOME_MODIFIER
+    || parsedText === PARSE_TEXT.ONLY_MODIFIER
+  );
 
-  // eslint-disable-next-line class-methods-use-this
-  isRestrictionNumberType(parsedText) {
-    return (
-      parsedText === PARSE_TEXT.MIN_MODIFIER
-      || parsedText === PARSE_TEXT.MAX_MODIFIER
-      || parsedText === PARSE_TEXT.EXACTLY_MODIFIER
-    );
-  }
+  isRestrictionNumberType = (parsedText) => (
+    parsedText === PARSE_TEXT.MIN_MODIFIER
+    || parsedText === PARSE_TEXT.MAX_MODIFIER
+    || parsedText === PARSE_TEXT.EXACTLY_MODIFIER
+  );
 
-  // eslint-disable-next-line class-methods-use-this
-  isNot(parsedText) {
-    return parsedText === PARSE_TEXT.NOT_OPERATOR;
-  }
+  isNot = (parsedText) => parsedText === PARSE_TEXT.NOT_OPERATOR;
 
   getClassObject(value) {
     if (
@@ -150,8 +134,7 @@ export default class Parser {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  checkOperator(operator, item) {
+  checkOperator = (operator, item) => {
     if (
       !(
         operator === undefined
@@ -162,10 +145,9 @@ export default class Parser {
     } else {
       return item;
     }
-  }
+  };
 
-  // eslint-disable-next-line class-methods-use-this
-  pushIntoData(data, text) {
+  pushIntoData = (data, text) => {
     if (!Array.isArray(data)) {
       throw Error('Variable data must be an array!');
     }
@@ -180,8 +162,11 @@ export default class Parser {
         text.split(PARSE_TEXT.SPACE),
       );
     }
-  }
+  };
 
+  /**
+   * @returns {}
+   */
   getNotObject(data) {
     return {
       type: DATA_STRUCTURE.NOT,
@@ -189,6 +174,9 @@ export default class Parser {
     };
   }
 
+  /**
+   * @returns {}
+   */
   getPropertyObject(data) {
     const { length } = data;
     let property;
@@ -232,13 +220,16 @@ export default class Parser {
         break;
       case 4:
         [property, restriction, not, value] = data;
-        this.isNot(not);
-        object = {
-          type: DATA_STRUCTURE.PROPERTY,
-          name: property,
-          set: this.getNotObject(value),
-          restriction,
-        };
+        if (!this.isNot(not)) {
+          throw Error(`Restriction must be followed by NOT operator when there are 4 items in property restriction! Current value is: ${not}.`);
+        } else {
+          object = {
+            type: DATA_STRUCTURE.PROPERTY,
+            name: property,
+            set: this.getNotObject(value),
+            restriction,
+          };
+        }
         break;
       default:
         throw Error(`There must not be less than 3 or more than 4 items in property restriction! Current number of items is ${length}.`);
@@ -250,17 +241,32 @@ export default class Parser {
   /**
    * @returns {}
    */
+  getSetObject = (list, operator) => ({
+    type: DATA_STRUCTURE.SET,
+    op: operator || DATA_STRUCTURE.AND,
+    list,
+  });
+
+  /**
+   * @returns {}
+   */
   getObjectRecursive(data) {
     const { length } = data;
     const list = [];
     let item;
     let operator;
+    let object;
     let i = 0;
 
     if (length === 1) {
-      list.push(this.getClassObject(data[0]));
+      object = this.getSetObject(
+        [
+          this.getClassObject(data[0]),
+        ],
+        DATA_STRUCTURE.AND,
+      );
     } else if (length >= 3 && length <= 4 && this.isRestrictionType(data[1])) {
-      list.push(this.getPropertyObject(data));
+      object = this.getPropertyObject(data);
     } else if (length > 1) {
       while (i < length) {
         item = data[i];
@@ -283,13 +289,11 @@ export default class Parser {
 
         i += 1;
       }
+
+      object = this.getSetObject(list, operator);
     }
 
-    return {
-      type: DATA_STRUCTURE.SET,
-      op: operator,
-      list,
-    };
+    return object;
   }
 
   /**
