@@ -2,6 +2,7 @@
   <li>
     <a
       href
+      :class="getClassByClassId(node.id)"
       @click.prevent="selectClass(node.id)"
     >
       <span>{{ node.name }}</span>
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 import {
   SET_SELECTED_CLASS_ID,
@@ -30,10 +31,26 @@ export default {
   props: {
     node: Object,
   },
+  computed: {
+    ...mapState(
+      'ClassStore',
+      {
+        selectedClassId: (state) => state.selectedClassId,
+      },
+    ),
+
+  },
   methods: {
     ...mapMutations('ClassStore', {
       setSelectedClassId: SET_SELECTED_CLASS_ID,
     }),
+
+    getClassByClassId(id) {
+      return {
+        badge: this.selectedClassId === id,
+        'badge-primary': this.selectedClassId === id,
+      };
+    },
 
     selectClass(id) {
       if (id && Number.isInteger(id)) {
