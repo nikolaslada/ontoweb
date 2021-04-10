@@ -144,7 +144,7 @@ export function initialState() {
     },
     count: null,
     selectedClassId: null,
-    whisperList: [
+    conditionWhisperList: [
       {
         id: 1,
         value: 'hasValueXYZ',

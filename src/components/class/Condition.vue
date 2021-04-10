@@ -91,7 +91,7 @@ export default {
       'ClassStore',
       {
         classId: (state) => state.selectedClassId,
-        whisperList: (state) => state.whisperList,
+        whisperList: (state) => state.conditionWhisperList,
       },
     ),
 

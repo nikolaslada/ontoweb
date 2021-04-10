@@ -7,7 +7,7 @@ import {
   SET_LOADING,
   SET_TREE_COUNT,
   SET_TREE,
-  SET_WHISPER_LIST,
+  SET_CONDITION_WHISPER_LIST,
   CHECK_CONDITION,
 } from './constants';
 
@@ -76,7 +76,7 @@ export default {
     const {
       data: [
         { condition: conditionResponse },
-        { whisperList = [] },
+        { conditionWhisperList = [] },
       ],
     } = await checkCondition(id, condition);
 
@@ -84,7 +84,7 @@ export default {
     classDetail.condition = conditionResponse;
 
     commit(SET_CLASS_DETAIL, classDetail);
-    commit(SET_WHISPER_LIST, ClassDetailFactory.createWhisperList(whisperList));
+    commit(SET_CONDITION_WHISPER_LIST, ClassDetailFactory.createWhisperList(conditionWhisperList));
 
     if (useLoader) {
       commit(SET_LOADING, false);
