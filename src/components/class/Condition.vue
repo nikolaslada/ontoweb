@@ -49,7 +49,7 @@ import {
 
 import RecursiveCondition from './RecursiveCondition.vue';
 import Whisperer from './Whisperer.vue';
-import Parser from '../../model/parser';
+import Parser from '../../model/Parser';
 
 export default {
   name: 'Condition',
