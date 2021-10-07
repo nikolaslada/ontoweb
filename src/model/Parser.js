@@ -1,3 +1,7 @@
+import ParserError from '@/errors/ParserError';
+import ConditionFactory from '@/factories/ConditionFactory';
+import Util from '@/model/Util';
+
 import {
   DATA_STRUCTURE,
   PARSE_TEXT,
@@ -6,6 +10,19 @@ import {
 export default class Parser {
   constructor() {
     this.text = '';
+  }
+
+  getConditionObject(humanReadable) {
+    const text = humanReadable
+      .trim()
+      .replace(/[\r\n]+/gm, PARSE_TEXT.SPACE)
+      .replace(/\s\s+/g, PARSE_TEXT.SPACE);
+    this.text = `(${text})`;
+    this.leftBracketList = this.getPositionListInText(PARSE_TEXT.LEFT_BRACKET, this.text);
+    this.rightBracketList = this.getPositionListInText(PARSE_TEXT.RIGHT_BRACKET, this.text);
+    const data = this.getDataTree();
+    const object = this.getConditionObjectRecursive(data);
+    return object;
   }
 
   getPositionListInText(search) {
@@ -21,6 +38,17 @@ export default class Parser {
     }
 
     return positionList;
+  }
+
+  getDataTree() {
+    if (this.leftBracketList.length !== this.rightBracketList.length) {
+      throw ParserError('There must be same count of left brackets and right brackets.');
+    } else {
+      this.i = 0;
+      this.leftIndex = 0;
+      this.rightIndex = 0;
+      return this.getDataTreeRecursive();
+    }
   }
 
   getDataTreeRecursive() {
@@ -57,17 +85,6 @@ export default class Parser {
     return data;
   }
 
-  getDataTree() {
-    if (this.leftBracketList.length !== this.rightBracketList.length) {
-      throw Error('There must be same count of left brackets and right brackets.');
-    } else {
-      this.i = 0;
-      this.leftIndex = 0;
-      this.rightIndex = 0;
-      return this.getDataTreeRecursive();
-    }
-  }
-
   getSubstring(start, end) {
     let result;
 
@@ -80,80 +97,13 @@ export default class Parser {
     return result;
   }
 
-  isOdd = (number) => (number % 2) === 1;
-
-  isJoinOperator = (parsedText) => (
-    parsedText === PARSE_TEXT.AND_OPERATOR
-    || parsedText === PARSE_TEXT.OR_OPERATOR
-  );
-
-  isRestrictionType(parsedText) {
-    return (
-      this.isRestrictionClassType(parsedText)
-      || this.isRestrictionNumberType(parsedText)
-    );
-  }
-
-  isRestrictionClassType = (parsedText) => (
-    parsedText === PARSE_TEXT.SOME_MODIFIER
-    || parsedText === PARSE_TEXT.ONLY_MODIFIER
-  );
-
-  isRestrictionNumberType = (parsedText) => (
-    parsedText === PARSE_TEXT.MIN_MODIFIER
-    || parsedText === PARSE_TEXT.MAX_MODIFIER
-    || parsedText === PARSE_TEXT.EXACTLY_MODIFIER
-  );
-
-  isNot = (parsedText) => parsedText === PARSE_TEXT.NOT_OPERATOR;
-
-  getClassObject(value) {
-    if (
-      this.isJoinOperator(value)
-      || this.isRestrictionType(value)
-      || this.isNot(value)
-      || Number.isNaN(value)
-    ) {
-      throw Error(`It must be a class if it is before or after the operator or if it is the only word in parentheses! Value ${value}`);
-    } else {
-      return {
-        type: DATA_STRUCTURE.CLASS,
-        name: value,
-      };
-    }
-  }
-
-  checkPropertyError(property) {
-    if (
-      this.isJoinOperator(property)
-      || this.isRestrictionType(property)
-      || this.isNot(property)
-      || Number.isNaN(property)
-    ) {
-      throw Error('First word in parentheses must be a property!');
-    }
-  }
-
-  checkOperator = (operator, item) => {
-    if (
-      !(
-        operator === undefined
-        || operator === item
-      )
-    ) {
-      throw Error('There must be only one type of operator in parentheses!');
-    } else {
-      return item;
-    }
-  };
-
   pushIntoData = (data, text) => {
     if (!Array.isArray(data)) {
-      throw Error('Variable data must be an array!');
+      throw ParserError('Variable data must be an array!');
     }
 
     if (typeof text !== 'string') {
-      throw Error('Variable text must be a string!');
+      throw ParserError('Variable text must be a string!');
     }
 
     if (text !== '') {
@@ -164,141 +114,27 @@ export default class Parser {
     }
   };
 
-  /**
-   * @returns {}
-   */
-  getNotObject(data) {
-    return {
-      type: DATA_STRUCTURE.NOT,
-      set: this.getObjectRecursive(data),
-    };
-  }
-
-  /**
-   * @returns {}
-   */
-  getPropertyObject(data) {
-    const { length } = data;
-    let property;
-    let restriction;
-    let value;
-    let not;
+  getConditionObjectRecursive(list) {
+    let listCount = 0;
     let object;
 
-    switch (length) {
-      case 3:
-        [property, restriction, value] = data;
-        this.checkPropertyError(property);
+    list.forEach(
+      (item) => {
+        listCount += (Array.isArray(item) ? 1 : 0);
+      },
+    );
 
-        if (this.isRestrictionClassType(restriction)) {
-          if (typeof value === 'string') {
-            value = [value];
-          }
-
-          object = {
-            type: DATA_STRUCTURE.PROPERTY,
-            name: property,
-            set: this.getObjectRecursive(value),
-            restriction,
-          };
-        } else if (this.isRestrictionNumberType(restriction)) {
-          if (Number.isNaN(value)) {
-            throw Error(`Number type restriction must be followed by number! Current value is: ${value}.`);
-          } else {
-            value = parseInt(value, 10);
-            object = {
-              type: DATA_STRUCTURE.PROPERTY,
-              name: property,
-              restriction,
-              value,
-            };
-          }
-        } else {
-          throw Error(`No valid restriction type ${restriction}!`);
-        }
-
-        break;
-      case 4:
-        [property, restriction, not, value] = data;
-        if (!this.isNot(not)) {
-          throw Error(`Restriction must be followed by NOT operator when there are 4 items in property restriction! Current value is: ${not}.`);
-        } else {
-          object = {
-            type: DATA_STRUCTURE.PROPERTY,
-            name: property,
-            set: this.getNotObject(value),
-            restriction,
-          };
-        }
-        break;
-      default:
-        throw Error(`There must not be less than 3 or more than 4 items in property restriction! Current number of items is ${length}.`);
+    if (listCount === 0) {
+      throw ParserError('There must not be empty list as item!');
+    } else if (listCount === 1) {
+      object = this.getObjectFromBracketPair(list);
+    } else {
+      object = this.getObjectRecursive(list);
     }
 
     return object;
   }
 
-  /**
-   * @returns {}
-   */
-  getSetObject = (list, operator) => ({
-    type: DATA_STRUCTURE.SET,
-    op: operator || DATA_STRUCTURE.AND,
-    list,
-  });
-
-  /**
-   * @returns {}
-   */
-  getObjectRecursive(data) {
-    const { length } = data;
-    const list = [];
-    let item;
-    let operator;
-    let object;
-    let i = 0;
-
-    if (length === 1) {
-      object = this.getSetObject(
-        [
-          this.getClassObject(data[0]),
-        ],
-        DATA_STRUCTURE.AND,
-      );
-    } else if (length >= 3 && length <= 4 && this.isRestrictionType(data[1])) {
-      object = this.getPropertyObject(data);
-    } else if (length > 1) {
-      while (i < length) {
-        item = data[i];
-
-        if (typeof item === 'string') {
-          if (this.isOdd(i)) {
-            if (this.isJoinOperator(item)) {
-              operator = this.checkOperator(operator, item);
-            } else {
-              throw Error(`There must be an operator on an even position! Position ${i}, current value ${item}`);
-            }
-          } else {
-            list.push(this.getClassObject(item));
-          }
-        } else if (this.isOdd(i)) {
-          throw Error('There must not be brackets on an even position!');
-        } else {
-          list.push(this.getObjectRecursive(item));
-        }
-
-        i += 1;
-      }
-
-      object = this.getSetObject(list, operator);
-    }
-
-    return object;
-  }
-
-  /**
-   * @returns {}
-   */
   getObjectFromBracketPair(data) {
     const { length } = data;
     let not;
@@ -312,7 +148,7 @@ export default class Parser {
         if (Array.isArray(subRange)) {
           object = this.getConditionObjectRecursive(subRange);
         } else {
-          throw Error(`There must be only parenthesis! Current value ${subRange}`);
+          throw ParserError(`There must be only parenthesis! Current value ${subRange}`);
         }
 
         break;
@@ -320,17 +156,21 @@ export default class Parser {
         [not, subRange] = data;
 
         if (not !== PARSE_TEXT.NOT_OPERATOR || typeof subRange === 'string') {
-          throw Error(`After ${PARSE_TEXT.NOT_OPERATOR} must be only parenthesis!`);
+          throw ParserError(`After ${PARSE_TEXT.NOT_OPERATOR} must be only parenthesis!`);
         } else {
-          object = {
-            type: DATA_STRUCTURE.NOT,
-            set: this.getConditionObjectRecursive(subRange),
-          };
+          object = ConditionFactory.createNotObject(
+            subRange,
+            (deepData) => this.getConditionObjectRecursive(deepData),
+          );
         }
 
         break;
       case 3:
-        object = this.getPropertyObject(data);
+        object = ConditionFactory.createPropertyObject(
+          data,
+          (deepData) => this.getObjectRecursive(deepData),
+          (notData) => this.getNotObject(notData),
+        );
         break;
       default:
         object = this.getObjectRecursive(data);
@@ -339,39 +179,73 @@ export default class Parser {
     return object;
   }
 
-  /**
-   * @returns {}
-   */
-  getConditionObjectRecursive(list) {
-    let listCount = 0;
+  getObjectRecursive(data) {
+    const { length } = data;
+    const list = [];
+    let item;
+    let operator;
     let object;
+    let i = 0;
 
-    list.forEach(
-      (item) => {
-        listCount += (Array.isArray(item) ? 1 : 0);
-      },
-    );
+    if (length === 1) {
+      object = ConditionFactory.createSetObject(
+        [
+          ConditionFactory.createClassObject(data[0]),
+        ],
+        DATA_STRUCTURE.AND,
+      );
+    } else if (length >= 3 && length <= 4 && Util.isRestrictionType(data[1])) {
+      object = ConditionFactory.createPropertyObject(
+        data,
+        (deepData) => this.getObjectRecursive(deepData),
+        (notData) => this.getNotObject(notData),
+      );
+    } else if (length > 1) {
+      while (i < length) {
+        item = data[i];
 
-    if (listCount === 0) {
-      throw Error('There must not be empty list as item!');
-    } else if (listCount === 1) {
-      object = this.getObjectFromBracketPair(list);
-    } else {
-      object = this.getObjectRecursive(list);
+        if (typeof item === 'string') {
+          if (Util.isOdd(i)) {
+            if (Util.isJoinOperator(item)) {
+              operator = this.checkOperator(operator, item);
+            } else {
+              throw ParserError(`There must be an operator on an even position! Position ${i}, current value ${item}`);
+            }
+          } else {
+            list.push(ConditionFactory.createClassObject(item));
+          }
+        } else if (Util.isOdd(i)) {
+          throw ParserError('There must not be brackets on an even position!');
+        } else {
+          list.push(this.getObjectRecursive(item));
+        }
+
+        i += 1;
+      }
+
+      object = ConditionFactory.createSetObject(list, operator);
     }
 
     return object;
   }
 
-  getConditionObject(humanReadable) {
-    const text = humanReadable
-      .trim()
-      .replace(/[\r\n]+/gm, PARSE_TEXT.SPACE)
-      .replace(/\s\s+/g, PARSE_TEXT.SPACE);
-    this.text = `(${text})`;
-    this.leftBracketList = this.getPositionListInText(PARSE_TEXT.LEFT_BRACKET, this.text);
-    this.rightBracketList = this.getPositionListInText(PARSE_TEXT.RIGHT_BRACKET, this.text);
-    const data = this.getDataTree();
-    return this.getConditionObjectRecursive(data);
+  getNotObject(data) {
+    return ConditionFactory.createNotObject(
+      data,
+      (deepData) => this.getObjectRecursive(deepData),
+    );
   }
+
+  checkOperator = (operator, item) => {
+    if (
+      !(
+        operator === undefined
+        || operator === item
+      )
+    ) {
+      throw ParserError('There must be only one type of operator in parentheses!');
+    } else {
+      return item;
+    }
+  };
 }
